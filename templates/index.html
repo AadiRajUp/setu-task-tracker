@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="search-block">
+    <div class="search-bar">
+        <input type="search" name="q" id="search">
+    </div>
+    <div class="options">
+        <div class="filtertype">
+            <div class="visibility">
+                <select name="visibility" id="visibility-data">
+                    <option value="public" selected>public</option>
+                    <option value="private" >private</option> <!-- selected = default option-->
+                </select>
+            </div>
+            <div class="tasktype">
+                <select name="tasktype" id="tasktype-data">
+                    <option value="assignedtome" selected>Assigned to me</option> <!-- selected = default option-->
+                    <option value="assignedbyme">Assigned by me</option>
+                    <option value="all">all</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="datablock" id="datablock">
+    <div class="taskHolder">
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    async function fetchalldat(){
+            let q = document.getElementById("search").value;
+            let visibility = document.getElementById("visibility-data").value;
+            let tasktype = document.getElementById("tasktype-data").value;
+
+            const response = await fetch("/search",
+                {
+                    method:"POST",
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({q,visibility,tasktype})
+                }
+            );
+            if(!response.ok){
+                console.log("ERROR OCCURRED SED",response.status)
+                return
+            }
+            const results = await response.json()
+
+            datablock.innerHTML = "";
+            results.forEach(result => {
+            
+            let buttons = "";
+
+            if (result.assigned_to === username) {
+                buttons += `
+                    <button type="button" class="editButton" onclick="handleEdit(this)">Edit</button>
+                    `;
+                }
+            
+            if(result.assigned_by === username || userrole === "Admin"){
+                buttons += `                        
+                <button type="button" class="deleteButton" onclick="handleDelete(this)">Delete</button>
+                <button type="button" class="finishButton" onclick="handleFinish(this)">Finished</button>
+                    `;
+            }
+            let elem = `
+            <div class="contentBox" data-tid=${result.tid}>
+                <div class="title">
+                    <h3>${result.title}</h3>
+                    <h3>-${result.assigned_to}</h3>
+                </div>
+                <div class="progressBar">
+                    <div class="progress" style="width:${result.progress}%;"></div>
+                </div>
+                <div class="numericData">
+                    <h6>${result.assigned_date}</h6>
+                </div>
+                <div class="extraContent">
+                    <hr>
+                    <div>
+                        <div class="taskDetails">
+                            <p>Task Description: ${result.description}</p>
+                            <p>Progress: ${result.progress_text}</p>
+                            <p>Remaining: WAIT</p>
+                        </div>
+                        <div class="peopleDetails">
+                            <div class="peopleWorking">People Working: ${result.people_working}</div>
+                            <div class="assignedBy">Assigned By: ${result.assigned_by}</div>
+                        </div>
+                    </div>
+                    <div class="ButtonHolder">
+                        ${buttons}   
+                    </div>
+                </div>
+            </div>
+            
+            `  
+            datablock.innerHTML+=elem
+    });}
+    function handleEdit(elem){
+        const tid = elem.closest(".contentBox").dataset.tid;
+        window.location.href = `/edit/${tid}`;
+    }
+    async function handleDelete(elem){
+        const tid = elem.closest(".contentBox").dataset.tid;
+        const response = await fetch("/delete",{
+            method:"POST",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify({tid})
+        });
+        if (response.ok){
+            fetchalldat();
+        }
+        else {
+            let result = await response.json()
+            alert(result.message)
+        }
+    }
+    async function handleFinish(elem){
+        const tid = elem.closest(".contentBox").dataset.tid;
+        const response = await fetch("/finish",{
+            method:"POST",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify({tid})
+        });
+        if (response.ok){
+            fetchalldat();
+        }
+        else {
+            let result = await response.json()
+            alert(result.message)
+        }
+    }
+    //document.addEventListener("DOMContentLoaded",fetchalldat);
+    const datablock = document.getElementById("datablock")
+    const username = "{{session['username']}}";
+    const userrole = "{{session['userrole']}}";
+    document.getElementById("search").addEventListener("input",fetchalldat );
+    document.getElementById("visibility-data").addEventListener("change",fetchalldat);
+    document.getElementById("tasktype-data").addEventListener("change",fetchalldat);
+    fetchalldat()
+
+</script>
+
+
+{% endblock %}

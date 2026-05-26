@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %} Form {% endblock %}
+
+{% block content %}
+    <div class="navbar">
+        <div class="logoAndTitleHolder">
+            <div class="logoHolder" onclick="document.location='{{url_for('getMainPage')}}'"></div>
+            <h1>FSU TASK TRACKER</h1>
+        </div>
+        <div class="userHolder">
+            <div class="profilePicHolder"></div>
+            <h4>Hello {{session.get("username")}}!</h4>
+        </div>
+    </div>
+    <div class="body">
+        <form action="{{url_for('handletask')}}" method="POST" class="adminFilled">
+            <input type="text" name="title" id="taskTitle" placeholder="Task Title" required>
+            <select name="catagorySelection" id="catagorySelection" required>
+                <option value="NULL">--Select Catagory--</option>
+                <option value="Admin">Admin</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Volunteer">Volunteer</option>
+            </select>
+            <select name="assignedto" id="individualName" required>
+                <option value="null">--Select Option--</option>
+            </select>
+            <textarea name="description" id="taskDescription" placeholder="Task Description" required></textarea>
+            <label for="Deadline">Deadline:</label> 
+            <input type="datetime-local" name="deadline" id="Deadline" placeholder="Deadline" required>
+            <button type="submit">Add Task</button>
+            </form> 
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+    const catagorySelection = document.getElementById("catagorySelection");
+    const individualName = document.getElementById("individualName");
+
+    const itemData = {
+        Admin:[
+            {value:"2",Text:"Swoyam Shrestha"},
+            {value:"1",Text:"Aadi"},
+            //{value:"Secretary",Text:"Secretary Jyu"}
+        ],
+        Supervisor:[
+            {value:"4",Text:"Puza"}
+        ],
+        Volunteer:[
+            {value:"3",Text:"Anup"},
+        ]
+    }
+    catagorySelection.addEventListener('change',()=>{
+        const selectedCatagory = catagorySelection.value;
+        individualName.innerHTML="<option value='null'>--Select Option--</option>";
+
+        if(selectedCatagory && itemData[selectedCatagory]){
+            itemData[selectedCatagory].forEach((element) => {
+                let newOption = document.createElement("option");
+                newOption.value = element.value;
+                newOption.textContent = element.Text;
+                individualName.appendChild(newOption);
+            });
+        }
+    });
+</script>
+{% endblock %}

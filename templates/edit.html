@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %} Edit {% endblock %}
+
+{% block content %}
+    <form class="editBody" action="{{url_for('edit')}}" method="POST">
+
+        <h2>Edit Task Progress</h2>
+        <input type="hidden" name="tid" value="{{task.tid}}">
+        <label for="myRange">Percentage Done: <span id="sliderValue">50</span>%</label>
+        <div class="slidecontainer">
+            <input type="range" min="0" max="100" value="{{task.progress}}" class="slider" id="myRange" name="progress">
+        </div>
+        
+        <label for="Progress">Progress</label>
+        <input type="text" name="progresstext" id="Progress" placeholder="Enter progress details" value="{{'' if task.progress_text is none else task.progress_text}}">
+        
+        <label for="PeopleWorking">People Working</label>
+        <input type="text" name="peopleworking" id="PeopleWorking" placeholder="Who's working on this?" value="{{'' if task.people_working is none else task.people_working}}">
+        
+        <button type="submit">Update Task</button>
+    </form>
+{% endblock %}
+{% block scripts %}
+<script>
+    const slider = document.getElementById("myRange");
+    const output = document.getElementById("sliderValue");
+    
+    // Function to update slider background
+    function updateSliderBackground() {
+        const value = (slider.value / slider.max) * 100;
+        slider.style.background = `linear-gradient(to right, #27ae60 0%, #27ae60 ${value}%, #ddd ${value}%, #ddd 100%)`;
+    }
+    
+    // Update the current slider value and background
+    output.textContent = slider.value;
+    updateSliderBackground();
+    
+    slider.oninput = function() {
+        output.textContent = this.value;
+        updateSliderBackground();
+    }
+    
+
+
+
+
+
+</script>
+{% endblock %}

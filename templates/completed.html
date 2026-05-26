@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/fsulogo.jpg')}}" type="image/x-icon">
+
+    <title>Completed Task</title>
+</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<body>
+       <div class="navbar">
+        <div class="logoAndTitleHolder">
+            <div class="logoHolder" onclick="document.location='{{url_for('index')}}'"></div>
+            <h1>FSU TASK TRACKER</h1>
+        </div>
+        <div class="userHolder" onclick="document.location='{{url_for('login.login')}}'">
+            <div class="profilePicHolder"></div>
+            <h4>Hello {{session.get("username")}}!</h4>
+        </div>
+    </div>
+    <div class="sortHolder">
+        <div class="searchBar">
+            <input type="text" name="searchKey" id="searchKey" placeholder="Search tasks..." value="{{searchKey}}">
+        </div>
+        <div class="filter-group">
+            <i class="fas fa-filter"></i>
+            <select name="taskType" id="taskType">
+                <option value="all" {% if taskType == "all" %}selected{% endif %}>All Tasks</option>
+                <option value="task_assigned_to" {% if taskType == "task_assigned_to" %}selected{% endif %}>Assigned to Me</option>
+                <option value="task_assigned_by" {% if taskType == "task_assigned_by" %}selected{% endif %}>Assigned by Me</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <i class="fas fa-sort"></i>
+            <select name="sortBy" id="sortBy">
+                <option value="default" {% if sortBy == "default" %}selected{% endif %}>Default</option>
+                <option value="task_deadline" {% if sortBy == "task_deadline" %}selected{% endif %}>Due Date</option>
+                <option value="task_percentage" {% if sortBy == "task_percentage" %}selected{% endif %}>Percentage</option>
+            </select>
+        </div>
+        <button type="button" class="sort-btn" onclick="sortData()">
+            <i class="fas fa-check"></i>
+            Apply
+        </button>
+    </div>
+    <div class="body">
+        <div class="contentHolder" id="contentHolder">
+            <!-- JS will inject content here -->
+        </div>
+    </div>
+    
+</body>
+<script>
+    function outputData(){
+    return {{ client_data|tojson }};
+    }
+    function sortData(){
+        const taskType = document.getElementById("taskType").value;
+        const sortBy = document.getElementById("sortBy").value;
+        const searchKey = document.getElementById("searchKey").value;
+        document.location=`{{url_for('completed.showCompletedTask')}}?task_type=${taskType}&sort_by=${sortBy}&search_key=${searchKey}`;
+    }
+</script>
+<script src="{{ url_for('static', filename='completed.js') }}"></script>
+</html>

@@ -1,0 +1,750 @@
+*{
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+
+    }
+    body{
+        margin: 0;
+        overflow: hidden;
+    }
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        height: 12dvh;
+        width: 100dvw;
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .logoHolder {
+        height: 10dvh;
+        width: 10dvh;
+        margin: 2dvh;
+        background-image: url("./images/fsulogo.jpg");
+        background-size: cover;
+        background-color: #ccc;
+        float: left;
+    }
+    .logoAndTitleHolder {
+        display: flex;
+        align-items: center;
+        margin-left: 2dvw;
+    }
+    .userHolder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 2dvw;
+        
+    }
+    .profilePicHolder {
+        height: 8dvh;
+        width: 8dvh;
+        background-color: #ccc;
+        background-image: url('./images/aadi.jpg');
+        background-size: cover;
+        margin-right: 1dvw;
+        border-radius: 50%;
+    }
+    .sortHolder{
+        display: flex;
+        height: 7dvh;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        padding: 0 2rem;
+        background-color: white;
+        border-bottom: 1px solid #ddd;
+        position: sticky;
+        top: 12dvh;
+        z-index: 999;
+    }
+
+    .sortHolder .searchBar {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .sortHolder .searchBar input {
+        padding: 8px 16px 8px 40px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        font-size: 14px;
+        background-color: #f5f5f5;
+        width: 250px;
+        transition: all 0.3s ease;
+    }
+
+    .sortHolder .searchBar input:focus {
+        outline: none;
+        border-color: #27ae60;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(39, 174, 96, 0.15);
+        width: 280px;
+    }
+
+    .sortHolder .searchBar::before {
+        content: "\f002";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 14px;
+        color: #666;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    .sortHolder .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .sortHolder .filter-group i {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .sortHolder select{
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: white;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+    }
+ 
+    .sortHolder select:focus{
+        outline: none;
+        border-color: #27ae60;
+    }
+
+    .sortHolder .sort-btn {
+        background-color: #27ae60;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .sortHolder .sort-btn:hover {
+        background-color: #1e8449;
+    }
+
+    .sortHolder .sort-btn:active {
+        background-color: #196f3d;
+    }
+
+    .sortHolder .sort-btn i {
+        font-size: 13px;
+    }
+
+    .body {
+        overflow: hidden;
+        display: flex;
+        height: 81dvh;
+        width: 100dvw;
+        background-color: #EDEDED;
+    }
+    .contentHolder {
+        height: 100%;
+        width: calc(100% - 80px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+    }
+    .contentHolder::-webkit-scrollbar {
+        width: 6px;
+    }
+    .contentHolder::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .contentHolder::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;
+    }
+    .contentHolder::-webkit-scrollbar-thumb:hover {
+        background: #999;
+    }
+    .body .contentHolder .contentBox{
+        margin: 2dvh 2dvw;
+        padding: 1.2dvh 1.5dvw;
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+        border-radius:1.5dvh ;
+        background-color: #F3F3F3;
+        width:80%;
+        height:fit-content;
+        display: flex;
+        flex-direction: column;
+    }
+    .body .contentHolder *{
+        margin: 0.5dvh 0.5dvw;
+    }
+    .body .contentHolder .contentBox .title{
+        width:100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .body .contentHolder .contentBox .progressBar{
+        width:100%;
+        height:1dvh;
+        margin-top:3dvh ;
+        background-color: #d9d9d9;
+        border-radius: 100dvh;
+        overflow: hidden;
+
+    }
+    .body .contentHolder .contentBox .progressBar .progress{
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width:0%;
+        background-color: aqua;
+    }
+    .body .contentHolder .contentBox .numericData{
+        width:100%;
+        opacity: 25%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .body .contentHolder .contentBox .extraContent{
+        display: none;
+    }
+    .body .contentHolder .contentBox .extraContent>div{
+        display: flex;
+        justify-content: space-between;
+    }
+    .body .contentHolder .contentBox{
+        cursor: pointer;
+    }
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+        width: 80px;
+        background-color: #f5f5f5;
+        border-left: 1px solid #ddd;
+    }
+    
+    .body .sidebar .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+    }
+    
+    .body .sidebar .buttons button {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .body .sidebar .buttons .add {
+        background-color: #27ae60;
+        color: white;
+    }
+    
+    .body .sidebar .buttons .add:hover {
+        background-color: #1e8449;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .body .sidebar .buttons .add:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+    
+    .body .sidebar .buttons .archive {
+        background-color: #7f8c8d;
+        color: white;
+    }
+    
+    .body .sidebar .buttons .archive:hover {
+        background-color: #5d6d7e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .body .sidebar .buttons .archive:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+    
+    .body .sidebar .buttons button i {
+        font-size: 20px;
+    }
+    
+
+.deleteButtonHolder{
+    display:flex;
+    flex-direction: row-reverse;
+    width: 100%;
+}
+
+    /* CSS */
+.deleteButton {
+  appearance: none;
+  backface-visibility: hidden;
+  background-color: #ae2727;
+  border-radius: 8px;
+  border-style: none;
+  box-shadow: rgba(174, 39, 39, 0.15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.5;
+  outline: none;
+  overflow: hidden;
+  padding: 13px 20px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.deleteButton:hover {
+  background-color: #842d1e;
+  opacity: 1;
+  transform: translateY(0);
+  transition-duration: .35s;
+}
+
+.deleteButton:active {
+  transform: translateY(2px);
+  transition-duration: .35s;
+}
+
+.deleteButton:hover {
+  box-shadow: rgba(182, 35, 35, 0.2) 0 6px 12px;
+}
+.finishButton {
+  appearance: none;
+  backface-visibility: hidden;
+  background-color: #27ae60;
+  border-radius: 8px;
+  border-style: none;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.5;
+  outline: none;
+  overflow: hidden;
+  padding: 13px 20px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.finishButton:hover {
+  background-color: #1e8449;
+  opacity: 1;
+  transform: translateY(0);
+  transition-duration: .35s;
+}
+
+.finishButton:active {
+  transform: translateY(2px);
+  transition-duration: .35s;
+}
+
+.finishButton:hover {
+  box-shadow: rgba(39, 174, 96, .2) 0 6px 12px;
+}
+.editButton {
+  appearance: none;
+  backface-visibility: hidden;
+  background-color: #27ae60;
+  border-radius: 8px;
+  border-style: none;
+  box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.5;
+  outline: none;
+  overflow: hidden;
+  padding: 13px 20px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.editButton:hover {
+  background-color: #1e8449;
+  opacity: 1;
+  transform: translateY(0);
+  transition-duration: .35s;
+}
+
+.editButton:active {
+  transform: translateY(2px);
+  transition-duration: .35s;
+}
+
+.editButton:hover {
+  box-shadow: rgba(39, 174, 96, .2) 0 6px 12px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - MEDIA QUERIES
+   Delete this entire section if you don't like it
+   ============================================ */
+
+/* Tablets and smaller laptops (768px - 1024px) */
+@media (max-width: 1024px) {
+    .navbar h1 {
+        font-size: 18px;
+    }
+
+    .logoHolder {
+        height: 8dvh;
+        width: 8dvh;
+    }
+
+    .sortHolder {
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    .sortHolder .searchBar input {
+        width: 180px;
+    }
+
+    .sortHolder .searchBar input:focus {
+        width: 200px;
+    }
+
+    .body .contentHolder .contentBox {
+        width: 85%;
+    }
+}
+
+/* Mobile devices (max 768px) */
+@media (max-width: 768px) {
+    .navbar {
+        height: 10dvh;
+        
+    }
+
+    .navbar h1 {
+        font-size: 16px;
+    }
+
+    .logoHolder {
+        height: 6dvh;
+        width: 6dvh;
+        margin: 1dvh;
+    }
+    .logoAndTitleHolder{
+        flex-direction: column;
+        align-items:flex-start;
+    }
+    .userHolder h4 {
+        font-size: 12px;
+    }
+
+    .profilePicHolder {
+        height: 6dvh;
+        width: 6dvh;
+    }
+
+    .sortHolder {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        gap: 0.5rem;
+        padding: 1rem;
+        top: 10dvh;
+    }
+
+    .sortHolder .searchBar {
+        width: 100%;
+        order: 1;
+    }
+
+    .sortHolder .searchBar input {
+        width: 100%;
+    }
+
+    .sortHolder .filter-group {
+        flex: 0 0 auto;
+        order: 2;
+        position: relative;
+    }
+
+    .sortHolder .filter-group select {
+        position: absolute;
+        opacity: 0;
+        pointer-events: auto;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+    }
+
+    .sortHolder .filter-group i {
+        font-size: 18px;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .sortHolder .filter-group i:active {
+        background-color: #27ae60;
+        color: white;
+    }
+
+    .sortHolder .sort-btn {
+        flex: 1;
+        order: 3;
+        min-width: 100px;
+    }
+
+    .body {
+        flex-direction: column-reverse;
+        height: auto;
+    }
+
+    .contentHolder {
+        width: 100% !important;
+        height: calc(100svh - 250px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+        padding-bottom: 20px;
+    }
+
+    .contentHolder::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .contentHolder::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;
+    }
+
+    .body .contentHolder .contentBox {
+        width: 95%;
+        max-width: 95%;
+        margin: 1dvh auto;
+        padding: 1.2dvh 3dvw;
+        box-sizing: border-box;
+    }
+
+    .body .contentHolder .contentBox * {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+    }
+
+    .body .contentHolder .contentBox .title {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .body .contentHolder .contentBox:last-child {
+        margin-bottom: 120px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 70px;
+        flex-direction: row;
+        justify-content: center;
+        border-left: none;
+        border-top: 1px solid #ddd;
+        position: sticky;
+        bottom: 0;
+        z-index: 1000;
+    }
+
+    .body .sidebar .buttons {
+        flex-direction: row;
+        gap: 2rem;
+        margin-bottom: 0;
+    }
+
+    .body .sidebar .buttons button {
+        height: 50px;
+        width: 50px;
+    }
+}
+
+/* Small mobile devices (max 480px) */
+@media (max-width: 480px) {
+    .navbar h1 {
+        font-size: 14px;
+    }
+
+    .logoAndTitleHolder {
+        margin-left: 0.5rem;
+    }
+
+    .userHolder {
+        margin-right: 0.5rem;
+    }
+
+    .userHolder h4 {
+        font-size: 10px;
+    }
+
+    .logoHolder {
+        height: 5dvh;
+        width: 5dvh;
+    }
+
+    .profilePicHolder {
+        height: 5dvh;
+        width: 5dvh;
+    }
+
+    .sortHolder {
+        padding: 0.8rem;
+        gap: 0.6rem;
+    }
+
+    .sortHolder .filter-group i {
+        font-size: 14px;
+    }
+
+    .sortHolder select,
+    .sortHolder .sort-btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+
+    .body .contentHolder .contentBox {
+        width: 96%;
+        max-width: 96%;
+        margin: 1dvh auto;
+        padding: 1dvh 2.5dvw;
+        box-sizing: border-box;
+    }
+
+    .body .contentHolder .contentBox * {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .body .sidebar .buttons {
+        gap: 1.5rem;
+    }
+
+    .body .sidebar .buttons button {
+        height: 45px;
+        width: 45px;
+    }
+
+    .body .sidebar .buttons button i {
+        font-size: 18px;
+    }
+
+    .deleteButton,
+    .finishButton,
+    .editButton {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+}
+
+/* Very small devices (max 375px) */
+@media (max-width: 375px) {
+    .navbar h1 {
+        font-size: 12px;
+    }
+
+    .body .contentHolder .contentBox {
+        width: 98%;
+        max-width: 98%;
+        margin: 0.8dvh auto;
+        padding: 1dvh 2dvw;
+        box-sizing: border-box;
+    }
+
+    .body .contentHolder .contentBox * {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .sortHolder .searchBar::before {
+        left: 10px;
+        font-size: 12px;
+    }
+
+    .sortHolder .searchBar input {
+        padding: 6px 12px 6px 32px;
+        font-size: 13px;
+    }
+}
+
+/* ============================================
+   END OF RESPONSIVE DESIGN SECTION
+   ============================================ */
