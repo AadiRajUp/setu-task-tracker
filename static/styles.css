@@ -4,6 +4,14 @@
         font-family: Arial, Helvetica, sans-serif;
 
     }
+    :root {
+        --bg-page: #ededed;
+        --bg-card: #f3f3f3;
+        --border-soft: rgba(0, 0, 0, 0.08);
+        --accent: #27ae60;
+        --accent-dark: #1e8449;
+        --danger: #ae2727;
+    }
     body{
         margin: 0;
         overflow: hidden;
@@ -14,11 +22,12 @@
         z-index: 1000;
         height: 12dvh;
         width: 100dvw;
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.96);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid var(--border-soft);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
     }
     .logoHolder {
         height: 10dvh;
@@ -57,8 +66,8 @@
         align-items: center;
         gap: 2rem;
         padding: 0 2rem;
-        background-color: white;
-        border-bottom: 1px solid #ddd;
+        background-color: rgba(255, 255, 255, 0.92);
+        border-bottom: 1px solid var(--border-soft);
         position: sticky;
         top: 12dvh;
         z-index: 999;
@@ -82,9 +91,9 @@
 
     .sortHolder .searchBar input:focus {
         outline: none;
-        border-color: #27ae60;
+        border-color: var(--accent);
         background-color: white;
-        box-shadow: 0 2px 8px rgba(39, 174, 96, 0.15);
+        box-shadow: 0 6px 14px rgba(39, 174, 96, 0.15);
         width: 280px;
     }
 
@@ -122,11 +131,11 @@
  
     .sortHolder select:focus{
         outline: none;
-        border-color: #27ae60;
+        border-color: var(--accent);
     }
 
     .sortHolder .sort-btn {
-        background-color: #27ae60;
+        background-color: var(--accent);
         color: white;
         padding: 8px 16px;
         border: none;
@@ -141,7 +150,7 @@
     }
 
     .sortHolder .sort-btn:hover {
-        background-color: #1e8449;
+        background-color: var(--accent-dark);
     }
 
     .sortHolder .sort-btn:active {
@@ -157,7 +166,7 @@
         display: flex;
         height: 81dvh;
         width: 100dvw;
-        background-color: #EDEDED;
+        background: radial-gradient(circle at top right, #f8f8f8 0%, var(--bg-page) 42%, #e7e7e7 100%);
     }
     .contentHolder {
         height: 100%;
@@ -182,9 +191,10 @@
     .body .contentHolder .contentBox{
         margin: 2dvh 2dvw;
         padding: 1.2dvh 1.5dvw;
-        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
         border-radius:1.5dvh ;
-        background-color: #F3F3F3;
+        border: 1px solid var(--border-soft);
+        background-color: var(--bg-card);
         width:80%;
         height:fit-content;
         display: flex;
@@ -212,7 +222,7 @@
         margin: 0;
         height: 100%;
         width:0%;
-        background-color: aqua;
+        background: linear-gradient(90deg, var(--accent), #4fc47f);
     }
     .body .contentHolder .contentBox .numericData{
         width:100%;
@@ -237,7 +247,7 @@
         height: 100%;
         width: 80px;
         background-color: #f5f5f5;
-        border-left: 1px solid #ddd;
+        border-left: 1px solid var(--border-soft);
     }
     
     .body .sidebar .buttons {
@@ -264,12 +274,12 @@
     }
     
     .body .sidebar .buttons .add {
-        background-color: #27ae60;
+        background-color: var(--accent);
         color: white;
     }
     
     .body .sidebar .buttons .add:hover {
-        background-color: #1e8449;
+        background-color: var(--accent-dark);
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
@@ -308,7 +318,7 @@
 .deleteButton {
   appearance: none;
   backface-visibility: hidden;
-  background-color: #ae2727;
+    background-color: var(--danger);
   border-radius: 8px;
   border-style: none;
   box-shadow: rgba(174, 39, 39, 0.15) 0 4px 9px;
@@ -354,7 +364,7 @@
 .finishButton {
   appearance: none;
   backface-visibility: hidden;
-  background-color: #27ae60;
+    background-color: var(--accent);
   border-radius: 8px;
   border-style: none;
   box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
@@ -383,7 +393,7 @@
 }
 
 .finishButton:hover {
-  background-color: #1e8449;
+    background-color: var(--accent-dark);
   opacity: 1;
   transform: translateY(0);
   transition-duration: .35s;
@@ -400,7 +410,7 @@
 .editButton {
   appearance: none;
   backface-visibility: hidden;
-  background-color: #27ae60;
+    background-color: var(--accent);
   border-radius: 8px;
   border-style: none;
   box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
@@ -429,7 +439,7 @@
 }
 
 .editButton:hover {
-  background-color: #1e8449;
+    background-color: var(--accent-dark);
   opacity: 1;
   transform: translateY(0);
   transition-duration: .35s;

@@ -9,8 +9,10 @@ def connectDB():
 tables_bp = Blueprint('tables', __name__)
 
 @tables_bp.route('/tables')
+
 def show_tables():
-    
+    if session.get('userrole') != "Admin":
+        return redirect("/")
     conn = connectDB()
     cur = conn.cursor()
     
@@ -35,7 +37,8 @@ def show_tables():
 
 @tables_bp.route('/execute_sql', methods=['POST'])
 def execute_sql():
-    
+    if session.get('userrole')!= "Admin":
+        return jsonify({"Message":"Access Denied!"}),403
     sql_query = request.json.get('query', '').strip()
     
     if not sql_query:

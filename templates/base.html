@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block styles %}{% endblock %}
     <title>{% block title %}Setu task tracker{% endblock %}</title>
 </head>
 <body>
     <nav class="navbar">
-        <div class="brand">Task Tracker</div>
+        <div class="brand" onclick="window.location.href='/'">Setu Task Tracker</div>
         <div class="nav-links">
-            {% if logged_in %}
-                <a href="{{ url_for('signup') }}" class="nav-link {% if active_page == 'signup' %}active{% endif %}">Signup</a>
-            {% endif %}
+            <a href="/form">Add Task</a>
+            <a href="/tables" {{"" if session.get('userrole')=="Admin" else "hidden"}}>Tables</a>
+            <a href="/completed">Completed</a>
+            <a href="/logout">Logout</a>            
         </div>
     </nav>
 

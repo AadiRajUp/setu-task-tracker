@@ -1,68 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="{{url_for('static', filename='images/fsulogo.jpg')}}" type="image/x-icon">
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
 
-    <title>Completed Task</title>
-</head>
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<body>
-       <div class="navbar">
-        <div class="logoAndTitleHolder">
-            <div class="logoHolder" onclick="document.location='{{url_for('index')}}'"></div>
-            <h1>FSU TASK TRACKER</h1>
-        </div>
-        <div class="userHolder" onclick="document.location='{{url_for('login.login')}}'">
-            <div class="profilePicHolder"></div>
-            <h4>Hello {{session.get("username")}}!</h4>
+{% block content %}
+<div class="search-block">
+    <div class="search-bar">
+        <input type="search" name="q" id="search" placeholder="Hello {{session.get('username')}}">
+    </div>
+    <div class="options">
+        <div class="filtertype">
+            <div class="visibility">
+                <select name="visibility" id="visibility-data">
+                    <option value="public" >public</option>
+                    <option value="private" selected>private</option> <!-- selected = default option-->
+                </select>
+            </div>
+            <div class="tasktype">
+                <select name="tasktype" id="tasktype-data">
+                    <option value="assignedtome" selected>Assigned to me</option> <!-- selected = default option-->
+                    <option value="assignedbyme" {{'hidden' if session.get('userrole')=='Volunteer' else ''}}>Assigned by me</option>
+                    <option value="all">all</option>
+                </select>
+            </div>
         </div>
     </div>
-    <div class="sortHolder">
-        <div class="searchBar">
-            <input type="text" name="searchKey" id="searchKey" placeholder="Search tasks..." value="{{searchKey}}">
-        </div>
-        <div class="filter-group">
-            <i class="fas fa-filter"></i>
-            <select name="taskType" id="taskType">
-                <option value="all" {% if taskType == "all" %}selected{% endif %}>All Tasks</option>
-                <option value="task_assigned_to" {% if taskType == "task_assigned_to" %}selected{% endif %}>Assigned to Me</option>
-                <option value="task_assigned_by" {% if taskType == "task_assigned_by" %}selected{% endif %}>Assigned by Me</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <i class="fas fa-sort"></i>
-            <select name="sortBy" id="sortBy">
-                <option value="default" {% if sortBy == "default" %}selected{% endif %}>Default</option>
-                <option value="task_deadline" {% if sortBy == "task_deadline" %}selected{% endif %}>Due Date</option>
-                <option value="task_percentage" {% if sortBy == "task_percentage" %}selected{% endif %}>Percentage</option>
-            </select>
-        </div>
-        <button type="button" class="sort-btn" onclick="sortData()">
-            <i class="fas fa-check"></i>
-            Apply
-        </button>
+</div>
+<div class="datablock" id="datablock">
+    <div class="taskHolder">
     </div>
-    <div class="body">
-        <div class="contentHolder" id="contentHolder">
-            <!-- JS will inject content here -->
-        </div>
-    </div>
-    
-</body>
+</div>
+{% endblock %}
+{% block scripts %}
 <script>
-    function outputData(){
-    return {{ client_data|tojson }};
+    async function fetchalldat(){
+            let q = document.getElementById("search").value;
+            let visibility = document.getElementById("visibility-data").value;
+            let tasktype = document.getElementById("tasktype-data").value;
+
+            const response = await fetch("/completedsearch",
+                {
+                    method:"POST",
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({q,visibility,tasktype})
+                }
+            );
+            if(!response.ok){
+                console.log("ERROR OCCURRED SED",response.status, response.json().message)
+                return
+            }
+            const results = await response.json()
+
+            datablock.innerHTML = "";
+            results.forEach(result => {
+            
+            let buttons = "";
+
+            
+            if(result.assigned_by === username || userrole === "Admin"){
+                buttons += `<button type="button" class="deleteButton" onclick="handleDelete(this)">Delete</button>`;
+            }
+            let elem = `
+            <div class="contentBox" data-tid=${result.tid}>
+                <div class="title">
+                    <h3>${result.title}</h3>
+                    <h3>-${result.assigned_to}</h3>
+                </div>
+                <div class="progressBar">
+                    <div class="progress" style="width:100%;"></div>
+                </div>
+                <div class="numericData">
+                    <h6>${result.assigned_date}</h6>
+                </div>
+                <div class="extraContent">
+                    <hr>
+                    <div>
+                        <div class="taskDetails">
+                            <p>Task Description: ${result.description}</p>
+                            <p>Task Deadline: ${result.deadline}</p>                            
+                        </div>
+                        <div class="peopleDetails">
+                            <div class="peopleWorking">People Worked: ${result.people_working}</div>
+                            <div class="assignedBy">Assigned By: ${result.assigned_by}</div>
+                        </div>
+                    </div>
+                    <div class="ButtonHolder">
+                        ${buttons}   
+                    </div>
+                </div>
+            </div>
+            `  
+            datablock.innerHTML+=elem
+    });
+
+    addToggleEventListeners();
+}
+    async function handleDelete(elem){
+        const tid = elem.closest(".contentBox").dataset.tid;
+        const response = await fetch("/delete",{
+            method:"POST",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify({tid})
+        });
+        if (response.ok){
+            fetchalldat();
+        }
+        else {
+            let result = await response.json()
+            alert(result.message)
+        }
     }
-    function sortData(){
-        const taskType = document.getElementById("taskType").value;
-        const sortBy = document.getElementById("sortBy").value;
-        const searchKey = document.getElementById("searchKey").value;
-        document.location=`{{url_for('completed.showCompletedTask')}}?task_type=${taskType}&sort_by=${sortBy}&search_key=${searchKey}`;
+    function addToggleEventListeners() {
+    const contentBoxes = document.querySelectorAll('.contentBox');
+    contentBoxes.forEach(box => {
+        box.addEventListener('click', toggleExtraContent);
+    });
     }
+
+    function toggleExtraContent() {
+        const extraContent = this.querySelector('.extraContent');
+        if (extraContent) {
+            extraContent.style.display =
+                extraContent.style.display === 'block' ? 'none' : 'block';
+        }
+    }
+    //document.addEventListener("DOMContentLoaded",fetchalldat);
+    const datablock = document.getElementById("datablock")
+    const username = "{{session['username']}}";
+    const userrole = "{{session['userrole']}}";
+    document.getElementById("search").addEventListener("input",fetchalldat );
+    document.getElementById("visibility-data").addEventListener("change",fetchalldat);
+    document.getElementById("tasktype-data").addEventListener("change",fetchalldat);
+    fetchalldat()
+
 </script>
-<script src="{{ url_for('static', filename='completed.js') }}"></script>
-</html>
+
+
+{% endblock %}

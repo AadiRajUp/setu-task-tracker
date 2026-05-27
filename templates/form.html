@@ -1,17 +1,10 @@
 {% extends "base.html" %}
 {% block title %} Form {% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+{% endblock %}
 
 {% block content %}
-    <div class="navbar">
-        <div class="logoAndTitleHolder">
-            <div class="logoHolder" onclick="document.location='{{url_for('getMainPage')}}'"></div>
-            <h1>FSU TASK TRACKER</h1>
-        </div>
-        <div class="userHolder">
-            <div class="profilePicHolder"></div>
-            <h4>Hello {{session.get("username")}}!</h4>
-        </div>
-    </div>
     <div class="body">
         <form action="{{url_for('handletask')}}" method="POST" class="adminFilled">
             <input type="text" name="title" id="taskTitle" placeholder="Task Title" required>
@@ -23,6 +16,11 @@
             </select>
             <select name="assignedto" id="individualName" required>
                 <option value="null">--Select Option--</option>
+            </select>
+            <select name="visibility" id="visibility" required>
+                <option value="public">Public</option>
+                <option value="private" selected>Private</option>
+
             </select>
             <textarea name="description" id="taskDescription" placeholder="Task Description" required></textarea>
             <label for="Deadline">Deadline:</label> 
@@ -36,7 +34,6 @@
 <script>
     const catagorySelection = document.getElementById("catagorySelection");
     const individualName = document.getElementById("individualName");
-
     const itemData = {
         Admin:[
             {value:"2",Text:"Swoyam Shrestha"},
@@ -44,10 +41,16 @@
             //{value:"Secretary",Text:"Secretary Jyu"}
         ],
         Supervisor:[
-            {value:"4",Text:"Puza"}
+            {value:"4",Text:"Puza"},
+            {value:"5",Text:"Swosti"},
+            {value:"6",Text:"Prasansa"},
+            {value:"7",Text:"Sapana"},
+            {value:"8",Text:"Diwas"},
         ],
         Volunteer:[
-            {value:"3",Text:"Anup"},
+            {value:"9",Text:"Anup"},
+            {value:"10",Text:"Ashim"},
+            {value:"11",Text:"Aadarsha"},
         ]
     }
     catagorySelection.addEventListener('change',()=>{

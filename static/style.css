@@ -1,0 +1,413 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --bg-page: #ededed;
+    --bg-card: #f3f3f3;
+    --bg-input: rgba(255, 255, 255, 0.92);
+    --text-main: #2c3e50;
+    --text-muted: #5f6f7f;
+    --border-soft: rgba(0, 0, 0, 0.08);
+    --accent: #27ae60;
+    --accent-dark: #1e8449;
+    --danger: #ae2727;
+    --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top right, #f8f8f8 0%, var(--bg-page) 42%, #e7e7e7 100%);
+    color: var(--text-main);
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid var(--border-soft);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    min-height: 74px;
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.nav-links a,
+.nav-link {
+    text-decoration: none;
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.2px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.nav-links a:hover,
+.nav-link:hover {
+    transform: translateY(-1px);
+    background: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.nav-links a:active,
+.nav-link:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+.nav-links a:focus-visible,
+.nav-link:focus-visible {
+    outline: 2px solid rgba(39, 174, 96, 0.18);
+    outline-offset: 2px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px 28px;
+}
+
+.search-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    padding: 16px;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-bar {
+    flex: 1 1 320px;
+}
+
+.search-bar input {
+    min-height: 46px;
+    border-radius: 999px;
+    padding-left: 16px;
+}
+
+#search,
+#visibility-data,
+#tasktype-data,
+.adminFilled input,
+.adminFilled select,
+.adminFilled textarea,
+.editBody input,
+.editBody select,
+.editBody textarea {
+    width: 100%;
+    border: 2px solid #d9d9d9;
+    border-radius: 8px;
+    padding: 11px 12px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+#search:focus,
+#visibility-data:focus,
+#tasktype-data:focus,
+.adminFilled input:focus,
+.adminFilled select:focus,
+.adminFilled textarea:focus,
+.editBody input:focus,
+.editBody select:focus,
+.editBody textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 8px 16px rgba(39, 174, 96, 0.15);
+    transform: translateY(-1px);
+}
+
+.options,
+.filtertype {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.options {
+    margin-left: auto;
+}
+
+.visibility,
+.tasktype {
+    min-width: 180px;
+}
+
+.datablock {
+    display: grid;
+    gap: 12px;
+}
+
+.taskHolder {
+    display: grid;
+    gap: 12px;
+}
+
+.contentBox {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.07);
+    padding: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.contentBox:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.11);
+    border-color: rgba(39, 174, 96, 0.18);
+}
+
+.contentBox .title,
+.contentBox .numericData,
+.contentBox .ButtonHolder,
+.contentBox .extraContent > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.contentBox .title h3:last-child {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.progressBar {
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    background: #dadada;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #4fc47f);
+}
+
+.numericData {
+    color: #6c7b88;
+    opacity: 0.85;
+    font-size: 0.85rem;
+}
+
+.extraContent {
+    display: none;
+    margin-top: 12px;
+}
+
+.extraContent p,
+.extraContent div {
+    line-height: 1.5;
+}
+
+.extraContent hr {
+    border: none;
+    border-top: 1px solid #d8d8d8;
+    margin-bottom: 10px;
+}
+
+.taskDetails p,
+.peopleDetails div {
+    color: #415262;
+    margin: 4px 0;
+}
+
+.ButtonHolder {
+    margin-top: 12px;
+}
+
+.ButtonHolder button {
+    min-width: 90px;
+}
+
+.editButton,
+.finishButton,
+.deleteButton,
+button[type="submit"],
+button[type="button"] {
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.editButton,
+.finishButton,
+button[type="submit"],
+button[type="button"] {
+    background: linear-gradient(135deg, var(--accent), #32bf70);
+    box-shadow: 0 6px 16px rgba(39, 174, 96, 0.28);
+}
+
+.editButton:hover,
+.finishButton:hover,
+button[type="submit"]:hover,
+button[type="button"]:hover {
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+    transform: translateY(-1px);
+}
+
+.deleteButton {
+    background: linear-gradient(135deg, var(--danger), #ca3c3c);
+    box-shadow: 0 6px 16px rgba(174, 39, 39, 0.28);
+}
+
+.deleteButton:hover {
+    background: linear-gradient(135deg, #8f2121, #ae2727);
+    transform: translateY(-1px);
+}
+
+.body {
+    width: 100%;
+    min-height: calc(100vh - 78px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.adminFilled,
+.editBody {
+    width: min(700px, 100%);
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    padding: 26px;
+    position: relative;
+    overflow: hidden;
+}
+
+.adminFilled::before,
+.editBody::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("./images/fsulogo.jpg") center/45% no-repeat;
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+.adminFilled > *,
+.editBody > * {
+    position: relative;
+    z-index: 1;
+}
+
+.editBody h2 {
+    color: var(--accent-dark);
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.adminFilled label,
+.editBody label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    color: #3a4a5a;
+    font-weight: 700;
+}
+
+.adminFilled textarea,
+.editBody textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.slidecontainer {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 9px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) 50%, #d8d8d8 50%, #d8d8d8 100%);
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--accent);
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--accent);
+    cursor: pointer;
+}
+
+@media (max-width: 760px) {
+    .container {
+        padding: 14px;
+    }
+
+    .navbar {
+        padding: 10px 12px;
+        min-height: 66px;
+    }
+
+    .search-block {
+        padding: 12px;
+    }
+
+    .contentBox {
+        padding: 12px;
+    }
+
+    .adminFilled,
+    .editBody {
+        padding: 18px;
+    }
+}
