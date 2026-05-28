@@ -12,8 +12,9 @@
         <div class="brand" onclick="window.location.href='/'">Setu Task Tracker</div>
         <div class="nav-links">
             <a href="/form">Add Task</a>
-            <a href="/tables" {{"" if session.get('userrole')=="Admin" else "hidden"}}>Tables</a>
-            <a href="/completed">Completed</a>
+           <!-- <a href="/tables" {{"" if session.get('userrole')=="Admin" else "hidden"}}>Tables</a>
+           --> 
+           <a href="/completed">Completed</a>
             <a href="/logout">Logout</a>            
         </div>
     </nav>

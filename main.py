@@ -203,8 +203,8 @@ def completed_search():
 
 @app.post("/login")
 def login():
-    username = request.form["username"]
-    password = request.form["password"]
+    username = request.form["username"].strip()
+    password = request.form["password"].strip()
 
     query = """
     select * from users
