@@ -36,7 +36,7 @@
             let visibility = document.getElementById("visibility-data").value;
             let tasktype = document.getElementById("tasktype-data").value;
 
-            const response = await fetch("/search",
+            const response = await fetch("/setu/search",
                 {
                     method:"POST",
                     headers:{
@@ -107,7 +107,7 @@
 }
     function handleEdit(elem){
         const tid = elem.closest(".contentBox").dataset.tid;
-        window.location.href = `/edit/${tid}`;
+        window.location.href = `/setu/edit/${tid}`;
     }
     async function handleDelete(elem){
         const tid = elem.closest(".contentBox").dataset.tid;
@@ -128,7 +128,7 @@
     }
     async function handleFinish(elem){
         const tid = elem.closest(".contentBox").dataset.tid;
-        const response = await fetch("/finish",{
+        const response = await fetch("/setu/finish",{
             method:"POST",
             headers:{
                 "content-type":"application/json"
@@ -140,7 +140,6 @@
         }
         else {
             let result = await response.json()
-            alert(result.message)
         }
     }
     function addToggleEventListeners() {

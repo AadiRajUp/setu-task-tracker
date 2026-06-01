@@ -10,8 +10,8 @@ load_dotenv() # Loads .env file
 FLASK_SECRET_KEY= os.getenv("FLASK_SECRET_KEY")
 
 
-app = Flask(__name__)
-app.secret_key = FLASK_SECRET_KEY
+app = Flask(__name__,static_url_path="/setu/static")
+app.secret_key = "YAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"
 def getdb():
     conn = sqlite3.connect("app.db")
     conn.row_factory = sqlite3.Row
@@ -33,29 +33,33 @@ def login_required(func):
         return func(*args, **kwargs)
     return wrapper
 
-@app.get("/")
+@app.get("/setu")
 @login_required
 def getMainPage():
     return render_template('index.html')
 
-@app.get("/form")
+@app.get("/setu/form")
 @login_required
 def getFormPage():
     if session["userrole"] not in ["Admin","Supervisor"]:
         return redirect(url_for('getMainPage'))
     return render_template('form.html')
 
-@app.get('/completed')
+@app.get('/setu/completed')
 @login_required
 def getCompletedPage():
     return render_template('completed.html')
 
-@app.get('/login')
+@app.get('/setu/login')
 def getLoginPage():
     error = request.args.get("error")
     return render_template('login.html',error=error)
+@app.get('/setu/notices')
+@login_required
+def getNoticePage():
+    return render_template("notice.html")
 
-@app.post('/search')
+@app.post('/setu/search')
 @login_required
 def search():
 
@@ -64,17 +68,17 @@ def search():
     q = data["q"]
     visibility = data["visibility"]
     tasktype = data["tasktype"]
-    
 
-    
+
+
     # Visibility can only be either public or private
     if visibility not in ["public","private"]:
             return jsonify({"message":"Invalid Request Bad Visibility"}),400
-    
+
     # checking perms according to role
     if session['userrole']=="Admin":
         if tasktype not in ["assignedtome","assignedbyme","all","absall"]:
-            return jsonify({"message":"Invalid Request"}),400            
+            return jsonify({"message":"Invalid Request"}),400
     elif session['userrole']=="Supervisor":
         if tasktype not in ["assignedtome","assignedbyme","all"]:
             return jsonify({"message":"Invalid Request"}),400
@@ -84,7 +88,7 @@ def search():
     else:
         return jsonify({"message":"Invalid Role"}),500
     query = """
-    SELECT 
+    SELECT
     tasks.tid,
     tasks.title,
     tasks.description,
@@ -104,7 +108,7 @@ def search():
     AND tasks.visibility = ?
     AND tasks.completed = 0;
     """
-    
+
     task_name = "%"
     assigned_to = "%"
     assigned_by = "%"
@@ -114,7 +118,7 @@ def search():
         assigned_to = int(session["userid"])
     if tasktype == "assignedbyme":
         assigned_by = int(session["userid"])
-    
+
     if visibility== "private":
         if tasktype=="all":
             return jsonify([])
@@ -129,7 +133,7 @@ def search():
 
 
 
-@app.post('/completedsearch')
+@app.post('/setu/completedsearch')
 @login_required
 def completed_search():
 
@@ -138,17 +142,17 @@ def completed_search():
     q = data["q"]
     visibility = data["visibility"]
     tasktype = data["tasktype"]
-    
 
-    
+
+
     # Visibility can only be either public or private
     if visibility not in ["public","private"]:
             return jsonify({"message":"Invalid Request Bad Visibility"}),400
-    
+
     # checking perms according to role
     if session['userrole']=="Admin":
         if tasktype not in ["assignedtome","assignedbyme","all","absall"]:
-            return jsonify({"message":"Invalid Request"}),400            
+            return jsonify({"message":"Invalid Request"}),400
     elif session['userrole']=="Supervisor":
         if tasktype not in ["assignedtome","assignedbyme","all"]:
             return jsonify({"message":"Invalid Request"}),400
@@ -158,7 +162,7 @@ def completed_search():
     else:
         return jsonify({"message":"Invalid Role"}),500
     query = """
-    SELECT 
+    SELECT
     tasks.tid,
     tasks.title,
     tasks.description,
@@ -178,7 +182,7 @@ def completed_search():
     AND tasks.visibility = ?
     AND tasks.completed = 1;
     """
-    
+
     task_name = "%"
     assigned_to = "%"
     assigned_by = "%"
@@ -188,7 +192,7 @@ def completed_search():
         assigned_to = int(session["userid"])
     if tasktype == "assignedbyme":
         assigned_by = int(session["userid"])
-    
+
     if visibility== "private":
         if tasktype=="all":
             return jsonify([])
@@ -201,7 +205,7 @@ def completed_search():
 
 
 
-@app.post("/login")
+@app.post("/setu/login")
 def login():
     username = request.form["username"].strip()
     password = request.form["password"].strip()
@@ -222,7 +226,7 @@ def login():
     return redirect(url_for("getMainPage"))
 
 
-@app.post("/tasks")
+@app.post("/setu/tasks")
 @login_required
 def handletask():
     title = request.form["title"]
@@ -247,7 +251,7 @@ def handletask():
         conn.close()
 
 
-@app.get("/edit/<tid>")
+@app.get("/setu/edit/<tid>")
 @login_required
 def getEditPage(tid):
     query = """
@@ -265,7 +269,7 @@ def getEditPage(tid):
     conn.close()
     return render_template("edit.html",task=row)
 
-@app.post("/edit")
+@app.post("/setu/edit")
 @login_required
 def edit():
     tid = request.form["tid"]
@@ -297,7 +301,7 @@ def edit():
         return redirect(url_for('getMainPage'))
 
 
-@app.post("/delete")
+@app.post("/setu/delete")
 @login_required
 def delete():
     data= request.get_json()
@@ -321,7 +325,7 @@ def delete():
     return jsonify({"message": "ok"}), 200
 
 
-@app.post("/finish")
+@app.post("/setu/finish")
 @login_required
 def finish():
     data= request.get_json()
@@ -343,11 +347,54 @@ def finish():
     conn.commit()
     conn.close()
     return jsonify({"message": "ok"}), 200
-@app.get('/logout')
+@app.get('/setu/logout')
 @login_required
 def logout():
     session.clear()
     return redirect(url_for('getLoginPage'))
+
+@app.post('/setu/notices')
+@login_required
+def fetch_notice():
+    query = """
+    SELECT
+    notices.nid,
+    notices.title,
+    notices.description,
+    notices.published_date,
+    u1.username AS published_by
+    FROM notices
+    JOIN users u1 ON notices.published_by = u1.uid
+    ORDER BY nid DESC;
+    """
+    conn = getdb()
+    rows = conn.execute(query).fetchall()
+    data = [dict(r) for r in rows]
+    conn.close()
+    return jsonify(data)
+@app.post('/setu/deletenotice')
+@login_required
+def delete_notice():
+    data= request.get_json()
+    nid = data["nid"]
+    query = """
+    select * from notices
+    where nid = ?;
+    """
+    conn=getdb()
+    row = conn.execute(query,(nid,)).fetchone()
+    conn.close()
+    if row is None:
+        return jsonify({"message": "not found"}), 404
+    if row["published_by"]!= int(session["userid"]) and session["userrole"]!="Admin":
+        return jsonify({"message": "unauthorized"}), 403#access denied that is not yours to delete
+    query = "delete from notices where nid = ?;"
+    conn = getdb()
+    conn.execute(query,(nid,))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "ok"}), 200
+
 @app.errorhandler(500)
 def server_error(e):
     return jsonify({"message": "Internal server error"}), 500

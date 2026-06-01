@@ -36,7 +36,7 @@
             let visibility = document.getElementById("visibility-data").value;
             let tasktype = document.getElementById("tasktype-data").value;
 
-            const response = await fetch("/completedsearch",
+            const response = await fetch("/setu/completedsearch",
                 {
                     method:"POST",
                     headers:{
@@ -97,7 +97,7 @@
 }
     async function handleDelete(elem){
         const tid = elem.closest(".contentBox").dataset.tid;
-        const response = await fetch("/delete",{
+        const response = await fetch("/setu/delete",{
             method:"POST",
             headers:{
                 "content-type":"application/json"

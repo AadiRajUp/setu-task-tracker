@@ -35,24 +35,21 @@
     const catagorySelection = document.getElementById("catagorySelection");
     const individualName = document.getElementById("individualName");
     const itemData = {
-        Admin:[
-            {value:"2",Text:"Swoyam Shrestha"},
-            {value:"1",Text:"Aadi"},
-            //{value:"Secretary",Text:"Secretary Jyu"}
-        ],
-        Supervisor:[
-            {value:"4",Text:"Puza"},
-            {value:"5",Text:"Swosti"},
-            {value:"6",Text:"Prasansa"},
-            {value:"7",Text:"Sapana"},
-            {value:"8",Text:"Diwas"},
-        ],
-        Volunteer:[
-            {value:"9",Text:"Anup"},
-            {value:"10",Text:"Ashim"},
-            {value:"11",Text:"Aadarsha"},
-        ]
-    }
+    Admin: [
+        { value: "1", Text: "Aadi" },
+    ],
+    Supervisor: [
+        { value: "2", Text: "Anup" },
+        { value: "3", Text: "Diwas" },
+        { value: "4", Text: "Mohit" },
+        { value: "5", Text: "Prashansa" },
+        { value: "6", Text: "Puza" },
+        { value: "7", Text: "Sapana" },
+        { value: "8", Text: "Swasthi" },
+        { value: "9", Text: "Swoyam" },
+    ],
+    Volunteer: []
+}
     catagorySelection.addEventListener('change',()=>{
         const selectedCatagory = catagorySelection.value;
         individualName.innerHTML="<option value='null'>--Select Option--</option>";

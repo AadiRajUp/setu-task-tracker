@@ -8,7 +8,7 @@ def connectDB():
         return -1
 tables_bp = Blueprint('tables', __name__)
 
-@tables_bp.route('/tables')
+@tables_bp.route('/setu/tables')
 
 def show_tables():
     if session.get('userrole') != "Admin":
@@ -35,7 +35,7 @@ def show_tables():
     
     return render_template('tables.html', tables_data=tables_data)
 
-@tables_bp.route('/execute_sql', methods=['POST'])
+@tables_bp.route('/setu/execute_sql', methods=['POST'])
 def execute_sql():
     if session.get('userrole')!= "Admin":
         return jsonify({"Message":"Access Denied!"}),403

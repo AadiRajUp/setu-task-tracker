@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="datablock" id="datablock">
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    async function fetchalldat(){
+
+            const response = await fetch("/setu/notices",
+                {
+                    method:"POST",
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }
+            );
+            if(!response.ok){
+                console.log("ERROR OCCURRED SED",response.status, response.json().message)
+                return
+            }
+            const results = await response.json()
+
+            datablock.innerHTML = "";
+            results.forEach(result => {
+
+            let buttons = "";
+            if(result.assigned_by === username || userrole === "Admin"){
+                buttons = `<button type="button" class="deleteButton" onclick="handleDelete(this)">Delete</button>`;
+            }
+            let elem = `
+            <div class="contentBox" data-nid=${result.nid}>
+                <div class="title">
+                    <h3>${result.title}</h3>
+                </div>
+                <div class="numericData">
+                    <h6>${result.published_date}</h6>
+                </div>
+                <div class="extraContent">
+                    <hr>
+                    <div>
+                        <div class="taskDetails">
+                            <p>Description: ${result.description}</p>                        
+                        </div>
+                        <div class="peopleDetails">
+                            <div class="assignedBy">Published By: ${result.published_by}</div>
+                        </div>
+                    </div>
+                    <div class="ButtonHolder">
+                        ${buttons}   
+                    </div>
+                </div>
+            </div>
+            `  
+            datablock.innerHTML+=elem
+    });
+
+    addToggleEventListeners();
+}
+    async function handleDelete(elem){
+        const nid = elem.closest(".contentBox").dataset.nid;
+        const response = await fetch("/setu/deletenotice",{
+            method:"POST",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify({nid})
+        });
+        if (response.ok){
+            fetchalldat();
+        }
+        else {
+            let result = await response.json()
+        }
+    }
+    function addToggleEventListeners() {
+    const contentBoxes = document.querySelectorAll('.contentBox');
+    contentBoxes.forEach(box => {
+        box.addEventListener('click', toggleExtraContent);
+    });
+    }
+
+    function toggleExtraContent() {
+        const extraContent = this.querySelector('.extraContent');
+        if (extraContent) {
+            extraContent.style.display =
+                extraContent.style.display === 'block' ? 'none' : 'block';
+        }
+    }
+    //document.addEventListener("DOMContentLoaded",fetchalldat);
+    const datablock = document.getElementById("datablock")
+    const username = "{{session['username']}}";
+    const userrole = "{{session['userrole']}}";
+    fetchalldat()
+
+</script>
+
+
+{% endblock %}
