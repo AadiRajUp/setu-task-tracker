@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %} Form {% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="body">
+        <form action="{{url_for('handleNotice')}}" method="POST" class="adminFilled">
+            <input type="text" name="title" id="taskTitle" placeholder="Notice Title" required>
+            <textarea name="description" id="taskDescription" placeholder="Task Description" required></textarea>
+            <button type="submit">Add Notice</button>
+            </form> 
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    
+{% endblock %}

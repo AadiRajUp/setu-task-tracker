@@ -33,7 +33,7 @@ def login_required(func):
         return func(*args, **kwargs)
     return wrapper
 
-@app.get("/setu")
+@app.get("/setu/")
 @login_required
 def getMainPage():
     return render_template('index.html')
@@ -58,6 +58,11 @@ def getLoginPage():
 @login_required
 def getNoticePage():
     return render_template("notice.html")
+
+@app.get('/setu/addnotice')
+@login_required
+def getAddNoticePage():
+    return render_template("addnotice.html")
 
 @app.post('/setu/search')
 @login_required
@@ -250,7 +255,25 @@ def handletask():
     finally:
         conn.close()
 
-
+@app.post('/setu/addnotice')
+@login_required
+def handleNotice():
+    title = request.form["title"]
+    description = request.form["description"]
+    assigned_by = int(session["userid"])
+    assigned_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+    query = "insert into notices(title,published_date,description,published_by) values(?,?,?,?)"
+    try:
+        conn = getdb()
+        conn.execute(query, (title,  assigned_date, description, assigned_by))
+        conn.commit()
+        return redirect(url_for('getMainPage'))
+    except sqlite3.Error as e:
+        print(e)
+        conn.rollback()
+        return redirect(url_for('getMainPage', error="Something went wrong"))
+    finally:
+        conn.close()
 @app.get("/setu/edit/<tid>")
 @login_required
 def getEditPage(tid):
