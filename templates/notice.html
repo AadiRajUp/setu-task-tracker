@@ -27,7 +27,7 @@
             results.forEach(result => {
 
             let buttons = "";
-            if(result.assigned_by === username || userrole === "Admin"){
+            if(result.published_by === username || userrole === "Admin"){
                 buttons = `<button type="button" class="deleteButton" onclick="handleDelete(this)">Delete</button>`;
             }
             let elem = `
