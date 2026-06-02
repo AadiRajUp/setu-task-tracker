@@ -10,7 +10,12 @@
 <body>
     <nav class="navbar">
         <div class="brand" onclick="window.location.href='/setu/'">Setu Task Tracker</div>
-        <div class="nav-links">
+        <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links" id="primary-navigation">
             <a href="/setu/form">Add Task</a>
             <a href="/setu/addnotice">Add Notice</a>
             <a href="/setu/notices">Notices</a>
@@ -25,6 +30,24 @@
     <main class="container">
         {% block content %}{% endblock %}
     </main>
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (navToggle && navLinks) {
+            navToggle.addEventListener('click', () => {
+                const isOpen = navLinks.classList.toggle('open');
+                navToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            navLinks.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>
